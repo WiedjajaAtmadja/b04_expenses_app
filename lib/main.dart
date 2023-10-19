@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'transaction.dart';
 
 void main() {
   runApp(const MyApp());
@@ -16,21 +17,46 @@ class MyApp extends StatelessWidget {
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
         useMaterial3: true,
       ),
-      home: const MyHomePage(title: 'Expenses App'),
+      home: const ExpenseApp(title: 'Expenses App'),
     );
   }
 }
 
-class MyHomePage extends StatefulWidget {
-  const MyHomePage({super.key, required this.title});
+class ExpenseApp extends StatefulWidget {
+  const ExpenseApp({super.key, required this.title});
   final String title;
 
   @override
-  State<MyHomePage> createState() => _MyHomePageState();
+  State<ExpenseApp> createState() => _ExpenseAppState();
 }
 
-class _MyHomePageState extends State<MyHomePage> {
-  int _counter = 0;
+class _ExpenseAppState extends State<ExpenseApp> {
+  final List<Transaction> _userTransactions = [
+    Transaction(
+      id: 'tx1',
+      title: 'Sarapan',
+      amount: 25000,
+      date: DateTime.now(),
+    ),
+    Transaction(
+      id: 'tx2',
+      title: 'Makan siang',
+      amount: 38000,
+      date: DateTime.now(),
+    ),
+    Transaction(
+      id: 'tx3',
+      title: 'Makan malam',
+      amount: 45000,
+      date: DateTime.now(),
+    ),
+    Transaction(
+      id: 'tx4',
+      title: 'Makan malam sekali lagi',
+      amount: 45000,
+      date: DateTime.now(),
+    ),
+  ];
 
   @override
   Widget build(BuildContext context) {
@@ -39,6 +65,15 @@ class _MyHomePageState extends State<MyHomePage> {
         backgroundColor: Theme.of(context).colorScheme.inversePrimary,
         title: Text(widget.title),
       ),
+      body: ListView.builder(
+          itemCount: _userTransactions.length,
+          itemBuilder: (ctx, index) {
+            return ListTile(
+              title: Text(_userTransactions[index].title),
+              subtitle: Text('${_userTransactions[index].date}'),
+              trailing: Text('Rp. ${_userTransactions[index].amount}'),
+            );
+          }),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
       floatingActionButton: const FloatingActionButton(
         onPressed: null,
