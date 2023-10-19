@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'transaction.dart';
+import 'package:intl/intl.dart';
 
 void main() {
   runApp(const MyApp());
@@ -58,6 +59,22 @@ class _ExpenseAppState extends State<ExpenseApp> {
     ),
   ];
 
+  void _showInputSheet(BuildContext ctx) {
+    showModalBottomSheet(
+      context: ctx,
+      builder: (_) {
+        return Column(
+          children: [
+            TextField(decoration: InputDecoration(labelText: 'Title')),
+            TextField(decoration: InputDecoration(labelText: 'Amount')),
+            TextButton(onPressed: () {}, child: Text('Choose Date')),
+            ElevatedButton(onPressed: () {}, child: Text('Add Transaction')),
+          ],
+        );
+      },
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -70,15 +87,16 @@ class _ExpenseAppState extends State<ExpenseApp> {
           itemBuilder: (ctx, index) {
             return ListTile(
               title: Text(_userTransactions[index].title),
-              subtitle: Text('${_userTransactions[index].date}'),
+              subtitle: Text(
+                  DateFormat.yMMMEd().format(_userTransactions[index].date)),
               trailing: Text('Rp. ${_userTransactions[index].amount}'),
             );
           }),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
-      floatingActionButton: const FloatingActionButton(
-        onPressed: null,
+      floatingActionButton: FloatingActionButton(
+        onPressed: () => _showInputSheet(context),
         tooltip: 'Add Item',
-        child: Icon(Icons.add),
+        child: const Icon(Icons.add),
       ), // This trailing comma makes auto-formatting nicer for build methods.
     );
   }
